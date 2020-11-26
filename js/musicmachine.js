@@ -53,10 +53,18 @@ $(document).ready(function () {
     // Empty array to record a song as the user clicks notes
     var recordedNotes = [];
 
+    var scaleNotes = ['C,3','D,3','E,3','F,3','G,3','A,3','B,3','C,4','C,4','B,3','A,3','G,3','F,3','E,3','D,3','C,3'];
+    var arpeggioNotes = ['C,3','E,3','G,3','C,4','E,4','G,4','C,5','G,4','E,4','C,4','G,3','E,3','C,3'];
     // This anonymous function makes the Play Recording
     // button play the array of recorded notes
     $("#playButton").click(function () {
         playRecording(recordedNotes);
+    });
+    $("#songOneButton").click(function () {
+        playRecording(scaleNotes);
+    });
+    $("#songTwoButton").click(function () {
+        playRecording(arpeggioNotes);
     });
 
     // Assign functions to the other buttons
@@ -111,6 +119,27 @@ $(document).ready(function () {
     }
 
     function playRecording(arrayOfNotes) {
+        // Loop over recorded notes, calling the anonymous
+        // function for each element
+        arrayOfNotes.forEach(function (entry, index) {
+            // Cause another anonymous function to run
+            // with a set delay (in milliseconds)
+            setTimeout(function () {
+                // The entry will be a string from the array,
+                // like "C,3"
+                playRecordedNote(entry);
+            }, index * 500); // additional 500 MS delay for each note
+        });
+
+        // After all the recorded notes have played, clear the span
+        // that displays the currently playing note and remove
+        // the dropshadow for the last played key
+        setTimeout(function () {
+            $("span.key").removeClass("playing");
+            $("#keyPlaying").html("&nbsp;");
+        }, arrayOfNotes.length * 500);
+    }
+    function playSongOne(arrayOfNotes) {
         // Loop over recorded notes, calling the anonymous
         // function for each element
         arrayOfNotes.forEach(function (entry, index) {
